@@ -77,3 +77,13 @@ func TestFindInText(t *testing.T) {
 		t.Fatalf(`TestFindInText("%s") = %v, want match for %v`, testString, result, wantResult)
 	}
 }
+
+func TestGetCarrier(t *testing.T) {
+	text := "0978123456"
+	want := Carriers()[97]
+	carrier := GetCarrier(text, "")
+
+	if carrier != want {
+		t.Fatalf(`TestGetCarrier("%s") = %v, want match for %v`, text, carrier, want)
+	}
+}

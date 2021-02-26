@@ -57,6 +57,17 @@ func RemoveAllSeparatorsAndSavePositions(text string) (string, []int) {
 	return replacedText, originOffsetIndex
 }
 
+func GetCarrier(text string, carrierNumber string) string {
+	if text != "" && carrierNumber == "" {
+		regex := regexp.MustCompile(Pattern(TypeAll))
+		carrierNumber = regex.FindStringSubmatch(text)[5]
+	}
+
+	n, _ := strconv.Atoi(carrierNumber)
+
+	return Carriers()[n]
+}
+
 func FindInText(text string, findType int) []Phone {
 	var result []Phone
 
@@ -111,8 +122,7 @@ func FindInText(text string, findType int) []Phone {
 		}
 
 		// Get carrier.
-		carrierNumber, _ := strconv.Atoi(textWithoutSeparators[subMatch[10]:subMatch[12]])
-		carrier := Carriers()[carrierNumber]
+		carrier := GetCarrier("", textWithoutSeparators[subMatch[10]:subMatch[12]])
 
 		// Get national format of phone number.
 		national := "+84" + textWithoutSeparators[subMatch[10]:subMatch[13]]
