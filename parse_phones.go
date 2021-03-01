@@ -32,7 +32,7 @@ func Pattern(findType int) string {
 		pieces = LandlineCarrierNumbers()
 	}
 
-	return `(\+)?(00)?(84)?(0)?(` + strings.Join(pieces, "|") + `)(\d{7})`
+	return `(((0084|\+84)(0?))|0)(` + strings.Join(pieces, "|") + `)(\d{7})`
 }
 
 func RemoveAllSeparatorsAndSavePositions(text string) (string, []int) {
@@ -125,7 +125,7 @@ func FindInText(text string, findType int) []Phone {
 
 			regex = regexp.MustCompile(`[ .\-]`)
 
-			if len(regex.FindAllString(origin, -1)) > 4 {
+			if len(regex.FindAllString(origin, -1)) > 3 {
 				continue
 			}
 		}

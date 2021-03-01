@@ -30,13 +30,6 @@ func TestFindInText(t *testing.T) {
 			EndsAt:    10,
 		},
 		{
-			Raw:       "09 89 99 98 88",
-			Formatted: "+84989999888",
-			Carrier:   "Viettel",
-			StartsAt:  32,
-			EndsAt:    46,
-		},
-		{
 			Raw:       "0989 999 888",
 			Formatted: "+84989999888",
 			Carrier:   "Viettel",
