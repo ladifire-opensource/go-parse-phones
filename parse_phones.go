@@ -80,6 +80,10 @@ func FindInText(text string, findType int) []Phone {
 		return result
 	}
 
+	// Replace all UTF-8 to ASCII.
+	u := regexp.MustCompile(`[^\x00-\x7F]`)
+	text = u.ReplaceAllString(text, "a")
+
 	textWithoutSeparators, positionIndexes := RemoveAllSeparatorsAndSavePositions(text)
 
 	if textWithoutSeparators == "" || len(textWithoutSeparators) < 9 {
