@@ -19,4 +19,4 @@ func main() {
 ```
 
 ## Notes
-This package only suport Vietnamese phone numbers yet. Other countries will be support in the next version
+This package only suport Vietnamese phone numbers yet. Other countries will be supported in the next version
