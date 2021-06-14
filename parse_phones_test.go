@@ -82,3 +82,15 @@ func TestGetCarrier(t *testing.T) {
 		t.Fatalf(`TestGetCarrier("%s") = %s, %s, want match for %s, %s`, text, carrier, e164, want, wantE164)
 	}
 }
+
+func TestGetCarrierFailed(t *testing.T) {
+	text := "0123456"
+	want := ""
+	wantE164 := ""
+
+	carrier, e164 := GetCarrier(text, "")
+
+	if carrier != want || e164 != wantE164 {
+		t.Fatalf(`TestGetCarrierFailed("%s") = %s, %s, want match for %s, %s`, text, carrier, e164, want, wantE164)
+	}
+}

@@ -64,6 +64,10 @@ func GetCarrier(text string, carrierNumber string) (string, string) {
 		regex := regexp.MustCompile(Pattern(TypeAll))
 		matches := regex.FindStringSubmatch(text)
 
+		if matches == nil || len(matches) == 0 {
+			return "", ""
+		}
+
 		carrierNumber = matches[5]
 		formatted = "+84" + matches[5] + matches[6]
 	}
