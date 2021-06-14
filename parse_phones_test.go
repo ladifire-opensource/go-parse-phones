@@ -23,46 +23,52 @@ func TestFindInText(t *testing.T) {
 
 	wantResult := []Phone{
 		{
-			Raw:       "0989999888",
-			Formatted: "+84989999888",
-			Carrier:   "Viettel",
-			StartsAt:  0,
-			EndsAt:    10,
+			Raw:         "0989999888",
+			Formatted:   "+84989999888",
+			UnFormatted: "0989999888",
+			Carrier:     "Viettel",
+			StartsAt:    0,
+			EndsAt:      10,
 		},
 		{
-			Raw:       "0989 999 888",
-			Formatted: "+84989999888",
-			Carrier:   "Viettel",
-			StartsAt:  47,
-			EndsAt:    59,
+			Raw:         "0989 999 888",
+			Formatted:   "+84989999888",
+			UnFormatted: "0989999888",
+			Carrier:     "Viettel",
+			StartsAt:    47,
+			EndsAt:      59,
 		},
 		{
-			Raw:       "0989-999-888",
-			Formatted: "+84989999888",
-			Carrier:   "Viettel",
-			StartsAt:  65,
-			EndsAt:    77,
+			Raw:         "0989-999-888",
+			Formatted:   "+84989999888",
+			UnFormatted: "0989999888",
+			Carrier:     "Viettel",
+			StartsAt:    65,
+			EndsAt:      77,
 		},
 		{
-			Raw:       "0989.999.888",
-			Formatted: "+84989999888",
-			Carrier:   "Viettel",
-			StartsAt:  78,
-			EndsAt:    90,
+			Raw:         "0989.999.888",
+			Formatted:   "+84989999888",
+			UnFormatted: "0989999888",
+			Carrier:     "Viettel",
+			StartsAt:    78,
+			EndsAt:      90,
 		},
 		{
-			Raw:       "0084 868 606 701",
-			Formatted: "+84989999888",
-			Carrier:   "Viettel",
-			StartsAt:  92,
-			EndsAt:    108,
+			Raw:         "0084 868 606 701",
+			Formatted:   "+84989999888",
+			UnFormatted: "0989999888",
+			Carrier:     "Viettel",
+			StartsAt:    92,
+			EndsAt:      108,
 		},
 		{
-			Raw:       "+840868584147",
-			Formatted: "+84989999888",
-			Carrier:   "Viettel",
-			StartsAt:  109,
-			EndsAt:    122,
+			Raw:         "+840868584147",
+			Formatted:   "+84989999888",
+			UnFormatted: "0989999888",
+			Carrier:     "Viettel",
+			StartsAt:    109,
+			EndsAt:      122,
 		},
 	}
 
@@ -75,11 +81,12 @@ func TestGetCarrier(t *testing.T) {
 	text := "0978123456"
 	want := Carriers()[97]
 	wantE164 := "+84978123456"
+	wantUnformatted := "0978123456"
 
-	carrier, e164 := GetCarrier(text, "")
+	carrier, e164, unformatted := GetCarrier(text, "")
 
-	if carrier != want || e164 != wantE164 {
-		t.Fatalf(`TestGetCarrier("%s") = %s, %s, want match for %s, %s`, text, carrier, e164, want, wantE164)
+	if carrier != want || e164 != wantE164 || unformatted != wantUnformatted {
+		t.Fatalf(`TestGetCarrier("%s") = %s, %s, want match for %s, %s, %s`, text, carrier, e164, want, wantE164, wantUnformatted)
 	}
 }
 
@@ -88,7 +95,7 @@ func TestGetCarrierFailed(t *testing.T) {
 	want := ""
 	wantE164 := ""
 
-	carrier, e164 := GetCarrier(text, "")
+	carrier, e164, _ := GetCarrier(text, "")
 
 	if carrier != want || e164 != wantE164 {
 		t.Fatalf(`TestGetCarrierFailed("%s") = %s, %s, want match for %s, %s`, text, carrier, e164, want, wantE164)

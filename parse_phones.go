@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) Ladifire, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 package goparsephone
 
 import (
@@ -13,11 +20,12 @@ const (
 )
 
 type Phone struct {
-	Raw       string
-	Formatted string
-	Carrier   string
-	StartsAt  int
-	EndsAt    int
+	Raw         string
+	Formatted   string
+	UnFormatted string
+	Carrier     string
+	StartsAt    int
+	EndsAt      int
 }
 
 func Pattern(findType int) string {
@@ -57,24 +65,26 @@ func RemoveAllSeparatorsAndSavePositions(text string) (string, []int) {
 	return replacedText, originOffsetIndex
 }
 
-func GetCarrier(text string, carrierNumber string) (string, string) {
+func GetCarrier(text string, carrierNumber string) (string, string, string) {
 	var formatted string
+	var raw string
 
 	if text != "" && carrierNumber == "" {
 		regex := regexp.MustCompile(Pattern(TypeAll))
 		matches := regex.FindStringSubmatch(text)
 
 		if matches == nil || len(matches) == 0 {
-			return "", ""
+			return "", "", ""
 		}
 
 		carrierNumber = matches[5]
-		formatted = "+84" + matches[5] + matches[6]
+		raw = matches[5] + matches[6]
+		formatted = "+84" + raw
 	}
 
 	n, _ := strconv.Atoi(carrierNumber)
 
-	return Carriers()[n], formatted
+	return Carriers()[n], formatted, "0" + raw
 }
 
 func FindInText(text string, findType int) []Phone {
@@ -135,18 +145,19 @@ func FindInText(text string, findType int) []Phone {
 		}
 
 		// Get carrier.
-		carrier, _ := GetCarrier("", textWithoutSeparators[subMatch[10]:subMatch[12]])
+		carrier, _, _ := GetCarrier("", textWithoutSeparators[subMatch[10]:subMatch[12]])
 
 		// Get national format of phone number.
 		national := "+84" + textWithoutSeparators[subMatch[10]:subMatch[13]]
 
 		// Export to structs.
 		result = append(result, Phone{
-			Raw:       origin,
-			Formatted: national,
-			Carrier:   carrier,
-			StartsAt:  start,
-			EndsAt:    end,
+			Raw:         origin,
+			Formatted:   national,
+			UnFormatted: "0" + textWithoutSeparators[subMatch[10]:subMatch[13]],
+			Carrier:     carrier,
+			StartsAt:    start,
+			EndsAt:      end,
 		})
 	}
 
